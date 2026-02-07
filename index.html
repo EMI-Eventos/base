@@ -10,8 +10,8 @@
     <style>
         /* CSS / ESTILO VISUAL */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --verde-ifb: #1B5E20; --verde-claro: #4CAF50; --verde-hover: #2E7D32; --dourado: #F9A825; --bg-principal: #FAFDF7; --bg-card: #FFFFFF; --texto-principal: #1a1a1a; --texto-secundario: #555; --borda: #E0E0E0; --sombra: 0 4px 20px rgba(27, 94, 32, 0.08); --erro: #c62828; --sucesso: #2e7d32; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg-principal); color: var(--texto-principal); min-height: 100vh; line-height: 1.6; }
+        :root { --verde-ifb: #1B5E20; --verde-claro: #4CAF50; --verde-hover: #2E7D32; --dourado: #F9A825; --bg-principal: #FAFDF7; --bg-card: #FFFFFF; --texto-principal: #1a1a1a; --texto-secundario: #555; --borda: #E0E0E0; --sombra: 0 4px 20px rgba(27, 94, 32, 0.08); --erro: #c62828; --sucesso: #2e7d32; --aviso: #ffa000; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg-principal); color: var(--texto-principal); min-height: 100vh; line-height: 1.6; display: flex; flex-direction: column; }
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
         header { background: linear-gradient(135deg, var(--verde-ifb) 0%, #004d40 100%); padding: 2rem 1rem; text-align: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-container { margin-bottom: 1rem; display: flex; justify-content: center; }
@@ -32,6 +32,7 @@
         .btn-outline { background: transparent; border: 2px solid var(--verde-ifb); color: var(--verde-ifb); margin-top: 1rem; font-size: 0.9rem; }
         .btn-secondary { background: var(--dourado); color: #37474F; }
         .btn-danger { background: var(--erro); color: white; }
+        .btn-aviso { background: #ff9800; color: white; } /* Botão laranja para pendentes */
         .dashboard-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; box-shadow: var(--sombra); }
         .user-info { display: flex; align-items: center; gap: 1rem; }
         .user-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, var(--verde-ifb), var(--verde-claro)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -64,34 +65,30 @@
         th { background: #f5f5f5; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; color: var(--texto-secundario); }
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; backdrop-filter: blur(4px); }
         .modal { background: var(--bg-card); border-radius: 16px; max-width: 400px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
+        /* Modal Largo para Pendentes */
+        .modal-lg { max-width: 800px; } 
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .hidden { display: none !important; }
         .status-message { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.95rem; line-height: 1.4; }
         .status-error { background: #ffebee; color: var(--erro); border: 1px solid #ffcdd2; }
         .status-success { background: #e8f5e9; color: var(--sucesso); border: 1px solid #c8e6c9; }
+        
+        /* ESTILOS NOVOS PARA GRÁFICOS */
+        .progress-bar-bg { background: #eee; height: 10px; width: 100%; border-radius: 5px; overflow: hidden; margin-top: 5px; }
+        .progress-bar-fill { height: 100%; background: var(--verde-claro); transition: width 0.5s ease; }
+        .progress-green { background: var(--verde-claro); }
+        .progress-yellow { background: var(--dourado); }
+        .progress-red { background: var(--erro); }
+        
         @media (max-width: 768px) { .container { padding: 1rem; } header h1 { font-size: 1.5rem; } .bases-grid { grid-template-columns: 1fr; } .btn { width: 100%; } }
 
         /* ESTILO DO RODAPÉ */
-        .app-footer {
-            text-align: center;
-            padding: 2rem 1rem;
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: auto; /* Isso empurra o rodapé para o final */
-            width: 100%;
-        }
-
-        /* AJUSTE PARA O RODAPÉ FICAR NO CHÃO */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        #login-screen, #student-screen, #admin-screen {
-            flex: 1; /* O conteúdo principal cresce para ocupar o espaço */
-            width: 100%;
-        }
-
+        .app-footer { text-align: center; padding: 2rem 1rem; color: #666; font-size: 0.9rem; margin-top: auto; width: 100%; }
+        /* AJUSTE PARA O RODAPÉ */
+        #login-screen, #student-screen, #admin-screen { flex: 1; width: 100%; }
+        
+        /* Lista Scrollable no Modal */
+        .scrollable-list { max-height: 400px; overflow-y: auto; }
     </style>
 </head>
 <body>
@@ -110,7 +107,7 @@
                 <form id="login-form">
                     <div class="form-group">
                         <label for="matricula-input">Número de Matrícula</label>
-                        <input type="number" id="matricula-input" placeholder="Digite sua matrícula (Ex: 123456123456)" required autofocus>
+                        <input type="text" id="matricula-input" placeholder="Digite sua matrícula" required autofocus>
                     </div>
                     <div id="login-error" class="status-message status-error hidden"></div>
                     <button type="submit" class="btn btn-primary">Acessar Sistema</button>
@@ -164,16 +161,42 @@
             <div class="admin-stats">
                 <div class="stat-card">
                     <div class="stat-number" id="admin-total">0</div>
-                    <div style="font-size: 0.9rem; color: #666;">Total de Inscritas</div>
+                    <div style="font-size: 0.9rem; color: #666;">Inscritas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="admin-pending" style="color: #ff9800;">0</div>
+                    <div style="font-size: 0.9rem; color: #666;">Pendentes</div>
                 </div>
                 <div class="stat-card" style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                    <button id="btn-export" class="btn btn-primary">📥 Baixar Excel (CSV)</button>
-                    <button id="btn-reset" class="btn btn-danger" style="font-size: 0.9rem;">⚠️ Resetar Sistema (Com Backup)</button>
+                    <button id="btn-open-pending" class="btn btn-aviso">📋 Ver Pendentes</button>
+                    <button id="btn-export" class="btn btn-primary">📥 Excel (Inscritos)</button>
+                    <button id="btn-reset" class="btn btn-danger" style="font-size: 0.9rem;">⚠️ Resetar Sistema</button>
                 </div>
             </div>
+
+            <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--sombra); margin-bottom: 2rem;">
+                <h3 style="color: var(--verde-ifb); font-family: Fraunces, serif; margin-bottom: 1rem;">Ocupação das Bases (Gráfico)</h3>
+                <div class="table-container" style="margin-top:0;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Base</th>
+                                <th style="text-align:center">1º Ano</th>
+                                <th style="text-align:center">2º Ano</th>
+                                <th style="text-align:center">3º Ano</th>
+                                <th style="text-align:center">Total</th>
+                                <th>Ocupação Visual</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-summary-table">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--sombra);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                    <h3 style="color: var(--verde-ifb); font-family: Fraunces, serif;">Lista de Presença</h3>
+                    <h3 style="color: var(--verde-ifb); font-family: Fraunces, serif;">Lista Detalhada de Inscritos</h3>
                     <select id="filtro-base" style="padding: 0.5rem; border-radius: 8px; border: 1px solid var(--borda);">
                         <option value="">Todas as Bases</option>
                     </select>
@@ -216,19 +239,43 @@
             </form>
         </div>
     </div>
+
+    <div id="pending-modal" class="modal-overlay hidden">
+        <div class="modal modal-lg">
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--borda); display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="font-family: Fraunces, serif; color: #e65100;">Estudantes Pendentes</h3>
+                <button type="button" id="btn-close-pending" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div style="padding: 1.5rem;">
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                    <button onclick="copyPendingList()" class="btn btn-outline" style="margin:0; width:auto;">📋 Copiar Lista (WhatsApp)</button>
+                    <button onclick="exportPendingCSV()" class="btn btn-primary" style="margin:0; width:auto;">📥 Baixar Excel</button>
+                </div>
+                <div class="table-container scrollable-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Nome</th>
+                                <th>Ano</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="app-footer">
         Feito com 💗 pelas docentes do EMI em Eventos
     </footer>
 
     <script type="module">
-        // Importa as funções que você precisa do SDK (Versão 12.9.0)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
         import { getDatabase, ref, onValue, set, remove, get, goOffline } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
         import { DATABASE_ALUNAS, BASES_CONFIG, COTAS, LIMITE_TOTAL_BASE } from './dados.js';
 
-        // ============================================
-        // SUAS CONFIGURAÇÕES (JÁ ATUALIZADAS)
-        // ============================================
         const firebaseConfig = {
             apiKey: "AIzaSyCmhqo-oO4ynkpjK87PvfvHor-eH4jZyvQ",
             authDomain: "base-2026---emi-eventos.firebaseapp.com",
@@ -239,35 +286,32 @@
             appId: "1:668654269025:web:08f06edb0ec48182eab020"
         };
 
-        // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app); // Inicializa o Banco de Dados também
+        const db = getDatabase(app);
 
         // ============================================
-        // DADOS DO SISTEMA
+        // SENHAS E SEGURANÇA (OBFUSCAÇÃO)
         // ============================================
-
-        const ADMIN_PASSWORD = "ifb2026yyz";
-        const RESET_PASSWORD = "fire";
+        // ADMIN_PASSWORD = "ifb2026yyz" (Base64)
+        const ADMIN_HASH = "aWZiMjAyNnl5eg==";
+        // RESET_PASSWORD = "fire" (Base64)
+        const RESET_HASH = "ZmlyZQ=="; 
 
         // ESTADO GLOBAL
         let inscricoes = []; 
         let currentUser = null;
 
         // ============================================
-        // CONEXÃO COM O BANCO EM TEMPO REAL
+        // FUNÇÕES DE LÓGICA E DADOS
         // ============================================
         
         function startListeningToDatabase() {
             const inscricoesRef = ref(db, 'inscricoes');
             onValue(inscricoesRef, (snapshot) => {
                 const data = snapshot.val();
-                if (data) {
-                    inscricoes = Object.values(data);
-                } else {
-                    inscricoes = [];
-                }
+                inscricoes = data ? Object.values(data) : [];
                 
+                // Atualiza interfaces ativas
                 if (!document.getElementById('student-screen').classList.contains('hidden')) {
                     renderStudentBases();
                     updateUserStatus();
@@ -284,18 +328,11 @@
         function saveInscricao(novaInscricao) {
             set(ref(db, 'inscricoes/' + novaInscricao.matricula), novaInscricao)
                 .then(() => {
-                    // 1. Mensagem de Sucesso
                     alert('🎉 PARABÉNS! Inscrição confirmada na ' + BASES_CONFIG.find(b => b.id === novaInscricao.baseId).nome + '.\n\nClique em OK para liberar o sistema para suas colegas.');
-                    
-                    // 2. CORTA a conexão com o Firebase imediatamente
                     goOffline(db);
-
-                    // 3. Manda a aluna para longe (liberando a vaga de conexão)
                     window.location.href = "https://www.ifb.edu.br"; 
                 })
-                .catch((error) => {
-                    alert('Erro ao salvar: ' + error.message);
-                });
+                .catch((error) => alert('Erro ao salvar: ' + error.message));
         }
 
         function deleteInscricao(matricula) {
@@ -306,43 +343,35 @@
             remove(ref(db, 'inscricoes'));
         }
 
+        function getContagem(baseId) {
+            const inscritosNaBase = inscricoes.filter(i => i.baseId === baseId);
+            return {
+                1: inscritosNaBase.filter(i => i.ano === 1).length,
+                2: inscritosNaBase.filter(i => i.ano === 2).length,
+                3: inscritosNaBase.filter(i => i.ano === 3).length,
+                total: inscritosNaBase.length
+            };
+        }
+
         // ============================================
         // LÓGICA DE INTERFACE
         // ============================================
 
         function getInscricaoAtual() {
             if (!currentUser) return null;
-            return inscricoes.find(i => i.matricula == currentUser.matricula); 
-        }
-
-        function getVagasPorBase(baseId) {
-            const inscritosNaBase = inscricoes.filter(i => i.baseId === baseId);
-            const porAno = {
-                1: inscritosNaBase.filter(i => i.ano === 1).length,
-                2: inscritosNaBase.filter(i => i.ano === 2).length,
-                3: inscritosNaBase.filter(i => i.ano === 3).length,
-            };
-            return {
-                total: inscritosNaBase.length,
-                porAno,
-                vagasRestantes: {
-                    1: COTAS[1] - porAno[1],
-                    2: COTAS[2] - porAno[2],
-                    3: COTAS[3] - porAno[3],
-                }
-            };
+            return inscricoes.find(i => String(i.matricula) === String(currentUser.matricula)); 
         }
 
         function renderStudentBases() {
             const grid = document.getElementById('bases-grid');
             grid.innerHTML = '';
-            
             const inscricaoFeita = getInscricaoAtual();
 
             BASES_CONFIG.forEach(base => {
-                const vagas = getVagasPorBase(base.id);
-                const temVagaAno = vagas.vagasRestantes[currentUser.ano] > 0;
-                const baseLotada = vagas.total >= LIMITE_TOTAL_BASE;
+                const counts = getContagem(base.id);
+                const vagasRestantesAno = COTAS[currentUser.ano] - counts[currentUser.ano];
+                const temVagaAno = vagasRestantesAno > 0;
+                const baseLotada = counts.total >= LIMITE_TOTAL_BASE;
                 const isSelected = inscricaoFeita && inscricaoFeita.baseId === base.id;
                 
                 let cardClass = 'base-card';
@@ -373,14 +402,14 @@
                     </div>
                     <div class="base-card-body">
                         <div class="cotas-grid">
-                            <div class="cota-item ${vagas.vagasRestantes[1] <= 0 ? 'esgotada' : 'disponivel'}">
-                                1º Ano <strong>${vagas.vagasRestantes[1]}/${COTAS[1]}</strong>
+                            <div class="cota-item ${(COTAS[1] - counts[1]) <= 0 ? 'esgotada' : 'disponivel'}">
+                                1º Ano <strong>${COTAS[1] - counts[1]}/${COTAS[1]}</strong>
                             </div>
-                            <div class="cota-item ${vagas.vagasRestantes[2] <= 0 ? 'esgotada' : 'disponivel'}">
-                                2º Ano <strong>${vagas.vagasRestantes[2]}/${COTAS[2]}</strong>
+                            <div class="cota-item ${(COTAS[2] - counts[2]) <= 0 ? 'esgotada' : 'disponivel'}">
+                                2º Ano <strong>${COTAS[2] - counts[2]}/${COTAS[2]}</strong>
                             </div>
-                            <div class="cota-item ${vagas.vagasRestantes[3] <= 0 ? 'esgotada' : 'disponivel'}">
-                                3º Ano <strong>${vagas.vagasRestantes[3]}/${COTAS[3]}</strong>
+                            <div class="cota-item ${(COTAS[3] - counts[3]) <= 0 ? 'esgotada' : 'disponivel'}">
+                                3º Ano <strong>${COTAS[3] - counts[3]}/${COTAS[3]}</strong>
                             </div>
                         </div>
                         <div style="margin-top: auto;">${btnHtml}</div>
@@ -396,35 +425,14 @@
 
         function updateUserStatus() {
              const inscricao = getInscricaoAtual();
-             
              if (inscricao) {
-                // CASO 1: ALUNA JÁ INSCRITA
                 const base = BASES_CONFIG.find(b => b.id === inscricao.baseId);
-                
                 document.getElementById('user-status').textContent = `✅ Inscrita na ${base.nome}`;
                 const msgDiv = document.getElementById('selection-message');
                 msgDiv.classList.remove('hidden');
-                
-                // Mensagem com aviso do contador regressivo
-                msgDiv.innerHTML = `
-                    <div>
-                        Você já está confirmada na <strong>${base.nome}</strong>.
-                        <br><br>
-                        ⏳ <em>Para liberar o acesso das colegas, você será redirecionada em 10 segundos...</em>
-                    </div>
-                `;
-
-                // O "Ejetor" Automático
-                setTimeout(() => {
-                    // Corta conexão com o banco para liberar vaga (se der erro ignora)
-                    try { goOffline(db); } catch(e) {} 
-                    
-                    // Manda para o site do IFB
-                    window.location.href = "https://www.ifb.edu.br";
-                }, 10000); // 10 segundos
-
+                msgDiv.innerHTML = `<div>Você já está confirmada na <strong>${base.nome}</strong>.<br><br>⏳ <em>Para liberar o acesso das colegas, você será redirecionada em 10 segundos...</em></div>`;
+                setTimeout(() => { try { goOffline(db); } catch(e) {} window.location.href = "https://www.ifb.edu.br"; }, 10000);
             } else {
-                // CASO 2: AINDA NÃO ESCOLHEU (Lógica normal)
                 document.getElementById('user-status').textContent = 'Selecione sua base abaixo';
                 document.getElementById('selection-message').classList.add('hidden');
             }
@@ -432,15 +440,7 @@
 
         window.selectBase = function(baseId) {
             if (getInscricaoAtual()) return;
-
-            const novaInscricao = {
-                matricula: currentUser.matricula,
-                nome: currentUser.nome,
-                ano: currentUser.ano,
-                baseId: baseId,
-                dataSelecao: new Date().toISOString()
-            };
-            
+            const novaInscricao = { matricula: currentUser.matricula, nome: currentUser.nome, ano: currentUser.ano, baseId: baseId, dataSelecao: new Date().toISOString() };
             saveInscricao(novaInscricao);
         }
 
@@ -450,62 +450,54 @@
             }
         }
 
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const matInput = document.getElementById('matricula-input').value.trim();
-
-            // 1. PRIMEIRO: Verifica se é a senha da Coordenação
-            // (Adicionei isso para garantir que você consiga acessar o painel)
-            if (typeof ADMIN_PASSWORD !== 'undefined' && matInput === ADMIN_PASSWORD) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('admin-screen').classList.remove('hidden');
-                // Tenta renderizar o painel se a função existir
-                if (typeof renderAdminPanel === 'function') renderAdminPanel();
-                return;
-            }
-
-            // 2. SEGUNDO: Verifica se é uma Estudante
-            const alunaEncontrada = DATABASE_ALUNAS.find(a => a.matricula === matInput);
-
-            if (alunaEncontrada) {
-                // SUCESSO: Aluna encontrada
-                currentUser = alunaEncontrada;
-                document.getElementById('login-error').classList.add('hidden');
-                
-                // Preenche os dados visuais
-                document.getElementById('user-avatar').textContent = currentUser.nome.charAt(0);
-                document.getElementById('user-name-display').innerHTML = `${currentUser.nome} <span class="ano-badge ano-${currentUser.ano}">${currentUser.ano}º Ano</span>`;
-                
-                // Troca de tela e atualiza
-                if (typeof showScreen === 'function') showScreen('student-screen');
-                if (typeof updateUserStatus === 'function') updateUserStatus();
-                
-                // Nota: Verifique se sua função chama 'renderStudentBases' ou 'renderBases'
-                // Mantive conforme seu snippet:
-                if (typeof renderStudentBases === 'function') {
-                    renderStudentBases();
-                } else if (typeof renderBases === 'function') {
-                    renderBases();
-                }
-
-            } else {
-                // 3. ERRO: Matrícula não encontrada (MENSAGEM ATUALIZADA)
-                const errorDiv = document.getElementById('login-error');
-                
-                // Usando innerHTML para permitir quebra de linha <br>
-                errorDiv.innerHTML = "❌ <strong>Matrícula não encontrada!</strong><br>Acesse o SUAP Ensino ou procure a coordenação, caso não saiba o número de sua matrícula.";
-                
-                errorDiv.classList.remove('hidden');
-            }
-        });
+        // ============================================
+        // PAINEL ADMIN (ATUALIZADO)
+        // ============================================
+        
+        function calculatePending() {
+            const registeredIds = inscricoes.map(i => String(i.matricula));
+            return DATABASE_ALUNAS.filter(aluna => !registeredIds.includes(String(aluna.matricula)));
+        }
 
         function renderAdminScreen() {
+            const pendentes = calculatePending();
             document.getElementById('admin-total').textContent = inscricoes.length;
+            document.getElementById('admin-pending').textContent = pendentes.length;
+            
             const select = document.getElementById('filtro-base');
             if(select.options.length <= 1) {
                 BASES_CONFIG.forEach(b => select.innerHTML += `<option value="${b.id}">${b.nome}</option>`);
             }
-            renderAdminTable();
+            renderAdminSummary(); // Renderiza Gráficos
+            renderAdminTable();   // Renderiza Lista
+        }
+
+        function renderAdminSummary() {
+            const tbody = document.getElementById('admin-summary-table');
+            tbody.innerHTML = '';
+            BASES_CONFIG.forEach(base => {
+                const counts = getContagem(base.id);
+                const percent = (counts.total / LIMITE_TOTAL_BASE) * 100;
+                let colorClass = 'progress-green';
+                if(percent > 70) colorClass = 'progress-yellow';
+                if(percent >= 95) colorClass = 'progress-red';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:bold; color:var(--verde-ifb)">${base.nome}</td>
+                        <td style="text-align:center">${counts[1]}/${COTAS[1]}</td>
+                        <td style="text-align:center">${counts[2]}/${COTAS[2]}</td>
+                        <td style="text-align:center">${counts[3]}/${COTAS[3]}</td>
+                        <td style="text-align:center; font-weight:bold;">${counts.total}</td>
+                        <td style="width: 200px;">
+                            <div style="font-size:0.8rem; font-weight:bold;">${Math.round(percent)}%</div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill ${colorClass}" style="width: ${percent}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
         }
 
         function renderAdminTable() {
@@ -544,7 +536,43 @@
             }).join('');
         }
 
-        function exportCSV() {
+        // ============================================
+        // MODAL DE PENDENTES
+        // ============================================
+        window.renderPendingModal = () => {
+            const pendentes = calculatePending().sort((a,b) => a.nome.localeCompare(b.nome));
+            const tbody = document.getElementById('pending-table-body');
+            tbody.innerHTML = pendentes.map(p => `
+                <tr>
+                    <td>${p.matricula}</td>
+                    <td><b>${p.nome}</b></td>
+                    <td><span class="ano-badge ano-${p.ano}">${p.ano}º</span></td>
+                </tr>
+            `).join('');
+            document.getElementById('pending-modal').classList.remove('hidden');
+        }
+
+        window.copyPendingList = () => {
+            const pendentes = calculatePending();
+            const text = pendentes.map(p => `${p.nome} (${p.ano}º Ano) - Matrícula: ${p.matricula}`).join('\n');
+            navigator.clipboard.writeText(text).then(() => alert("✅ Lista copiada!"));
+        }
+
+        window.exportPendingCSV = () => {
+             const pendentes = calculatePending();
+            let csvContent = "Matricula;Nome;Ano\n";
+            pendentes.forEach(p => { csvContent += `${p.matricula};${p.nome};${p.ano}\n`; });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' }));
+            link.download = `PENDENTES_IFB_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+
+        // ============================================
+        // EXPORTAÇÃO E RESET
+        // ============================================
+
+        window.exportCSV = () => {
             let csvContent = "Base;Docente;Ano;Matricula;Nome da Estudante;Data;Hora\n";
             const listaOrdenada = [...inscricoes].sort((a, b) => {
                 if (a.baseId !== b.baseId) return a.baseId - b.baseId;
@@ -562,39 +590,59 @@
             link.click();
         }
 
-       window.resetSystem = function() {
-            // 1. Pede a senha de segurança ESPECÍFICA DE RESET
-            const senhaConfirmacao = prompt("⚠️ ZONA DE PERIGO ⚠️\n\nEsta ação apagará TODOS os dados do servidor permanentemente.\n\nPara confirmar, digite a SENHA DE RESET (senha de segurança):");
-
-            // 2. Se a pessoa clicar em "Cancelar", para tudo.
+        window.resetSystem = function() {
+            const senhaConfirmacao = prompt("⚠️ ZONA DE PERIGO ⚠️\n\nEsta ação apagará TODOS os dados. Digite a senha de reset:");
             if (senhaConfirmacao === null) return;
-
-            // 3. Verifica se a senha é a de RESET (RESET_PASSWORD = "fire")
-            if (senhaConfirmacao === RESET_PASSWORD) {
-                // Senha correta: faz o backup e deleta
-                alert("Senha confirmada! O download do backup iniciará agora.");
+            // Validação segura com Hash
+            if (btoa(senhaConfirmacao) === RESET_HASH) {
+                alert("Confirmado. Baixando backup e resetando...");
                 exportCSV();
-                
-                // Espera 1 segundo para garantir o download e apaga
-                setTimeout(() => {
-                    deleteAllData();
-                    alert("Sistema resetado com sucesso. O banco de dados está vazio.");
-                    location.reload(); // Recarrega a página para limpar a tabela visualmente
-                }, 1500);
+                setTimeout(() => { deleteAllData(); alert("Sistema resetado."); location.reload(); }, 1500);
             } else {
-                // Senha errada
-                alert("⛔ Senha incorreta! O reset foi cancelado.");
+                alert("⛔ Senha incorreta!");
             }
         }
 
+        // ============================================
+        // EVENTOS E INICIALIZAÇÃO
+        // ============================================
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const matInput = document.getElementById('matricula-input').value.trim();
+
+            // LOGIN COORDENAÇÃO (Verificação Hash)
+            if (typeof ADMIN_HASH !== 'undefined' && btoa(matInput) === ADMIN_HASH) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-screen').classList.remove('hidden');
+                if (typeof renderAdminScreen === 'function') renderAdminScreen();
+                return;
+            }
+
+            // LOGIN ESTUDANTE
+            const alunaEncontrada = DATABASE_ALUNAS.find(a => String(a.matricula) === String(matInput));
+            if (alunaEncontrada) {
+                currentUser = alunaEncontrada;
+                document.getElementById('login-error').classList.add('hidden');
+                document.getElementById('user-avatar').textContent = currentUser.nome.charAt(0);
+                document.getElementById('user-name-display').innerHTML = `${currentUser.nome} <span class="ano-badge ano-${currentUser.ano}">${currentUser.ano}º Ano</span>`;
+                showScreen('student-screen');
+                updateUserStatus();
+                renderStudentBases();
+            } else {
+                const errorDiv = document.getElementById('login-error');
+                errorDiv.innerHTML = "❌ <strong>Matrícula não encontrada!</strong><br>Acesse o SUAP Ensino ou procure a coordenação.";
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
         document.getElementById('btn-logout').addEventListener('click', () => { currentUser = null; document.getElementById('matricula-input').value = ''; showScreen('login-screen'); });
         document.getElementById('btn-admin-logout').addEventListener('click', () => showScreen('login-screen'));
-        
         document.getElementById('btn-admin-login').addEventListener('click', () => { document.getElementById('admin-modal').classList.remove('hidden'); });
         document.getElementById('btn-cancel-admin').addEventListener('click', () => { document.getElementById('admin-modal').classList.add('hidden'); });
         document.getElementById('admin-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            if (document.getElementById('admin-password').value === ADMIN_PASSWORD) {
+            if (btoa(document.getElementById('admin-password').value) === ADMIN_HASH) {
                 document.getElementById('admin-modal').classList.add('hidden');
                 document.getElementById('admin-password').value = '';
                 showScreen('admin-screen');
@@ -607,6 +655,10 @@
         document.getElementById('filtro-base').addEventListener('change', renderAdminTable);
         document.getElementById('btn-export').addEventListener('click', exportCSV);
         document.getElementById('btn-reset').addEventListener('click', resetSystem);
+        
+        // Novos Eventos Pendentes
+        document.getElementById('btn-open-pending').addEventListener('click', renderPendingModal);
+        document.getElementById('btn-close-pending').addEventListener('click', () => document.getElementById('pending-modal').classList.add('hidden'));
 
         function showScreen(screenId) {
             document.querySelectorAll('#login-screen, #student-screen, #admin-screen').forEach(el => el.classList.add('hidden'));
@@ -614,39 +666,24 @@
             window.scrollTo(0,0);
         }
 
-        // INICIA ESCUTA DO BANCO
         startListeningToDatabase();
 
-        // ============================================
-        // 🛡️ SISTEMA DE AUTO-LOGOUT (INATIVIDADE)
-        // ============================================
+        // AUTO LOGOUT
         let tempoInatividade;
-        const LIMITE_MINUTOS = 2; 
-        const TEMPO_LIMITE = LIMITE_MINUTOS * 60 * 1000; // Converte para milissegundos
-
         function resetarTimer() {
             clearTimeout(tempoInatividade);
-            
             tempoInatividade = setTimeout(() => {
-                // Tenta desconectar do Firebase antes de sair
                 try { goOffline(db); } catch(e) {} 
-
-                // Redireciona para o site do IFB
-                alert("⏳ Sessão expirada por inatividade.\nVocê será redirecionada.");
+                alert("⏳ Sessão expirada por inatividade.");
                 window.location.href = "https://www.ifb.edu.br";
-            }, TEMPO_LIMITE);
+            }, 2 * 60 * 1000);
         }
-
-        // Monitora qualquer movimento para saber que a pessoa ainda está ali
-        ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'].forEach(evento => {
-            document.addEventListener(evento, resetarTimer);
-        });
-
-        // Inicia o contador assim que a página carrega
+        ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'].forEach(ev => document.addEventListener(ev, resetarTimer));
         resetarTimer();
+
+        window.copyPendingList = copyPendingList;
+        window.exportPendingCSV = exportPendingCSV;
 
     </script>
 </body>
-
 </html>
-
