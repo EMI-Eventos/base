@@ -111,7 +111,7 @@ export const DATABASE_ALUNAS = [
     { matricula: "2026101610017", nome: "WILIANE CAMILY DOS SANTOS BRITO", ano: 1 },
     { matricula: "2026101610013", nome: "YASMIN LARISSA RAMOS DOS SANTOS", ano: 1 },
 
-    // --- 2º ANO (52 Estudantes) ---
+    // --- 2º ANO (57 Estudantes) ---
     { matricula: "241012610018", nome: "ALICE GABRIELA OLIVEIRA FIGUEREDO", ano: 2 },
     { matricula: "251012610014", nome: "ANA CLARA LEITE ALVES", ano: 2 },
     { matricula: "251012610050", nome: "ANA CLARA NOGUEIRA NUNES DA SILVA", ano: 2 },
@@ -164,8 +164,13 @@ export const DATABASE_ALUNAS = [
     { matricula: "251012610064", nome: "THALITA RODRIGUES QUERINO", ano: 2 },
     { matricula: "251012610042", nome: "THOMAZ CAMBRAIA VIANA OLIVEIRA", ano: 2 },
     { matricula: "251012610060", nome: "YASMIM NERES SOUZA SANTOS", ano: 2 },
+    { matricula: "231012610041", nome: "Amanda Remor Stecanela Dos Santos", ano: 2 },
+    { matricula: "251012610049", nome: "Caroline Prates Cardoso", ano: 2 },
+    { matricula: "251012610058", nome: "João Francisco De Morais Barbosa Eirado", ano: 2 },
+    { matricula: "251012610043", nome: "Maíra Albuquerque De Castro", ano: 2 },	
+    { matricula: "251012610026", nome: "Rodrigo Augusto Machado Ribeiro", ano: 2 },	
 
-    // --- 3º ANO (32 Estudantes) ---
+    // --- 3º ANO (36 Estudantes) ---
     { matricula: "241012610050", nome: "ALANA CARDOSO NEVES MARTINS VIEIRA", ano: 3 },
     { matricula: "241012610021", nome: "ANA JÚLYA DIAS DA SILVA DUTRA", ano: 3 },
     { matricula: "241012610054", nome: "ANA LETÍCIA DE SOUZA MACHADO", ano: 3 },
@@ -197,5 +202,9 @@ export const DATABASE_ALUNAS = [
     { matricula: "241012610008", nome: "SAMI COSTA MARQUES DE OLIVEIRA", ano: 3 },
     { matricula: "241012610039", nome: "SOPHIA RODRIGUES DOS SANTOS", ano: 3 },
     { matricula: "241012610005", nome: "THIAGO FIGUEIREDO MACHADO", ano: 3 },
-    { matricula: "241012610016", nome: "YASMIN PEREIRA OLIVEIRA", ano: 3 }
+    { matricula: "241012610016", nome: "YASMIN PEREIRA OLIVEIRA", ano: 3 },
+    { matricula: "241012610040", nome: "Gustavo Henrique Ribeiro Almeida", ano: 3 },
+    { matricula: "241012610028", nome: "Maria Theresa De Carvalho Minakawa", ano: 3 },
+    { matricula: "241012610030", nome: "Maria Clara Nascimento Da Luz", ano: 3 },	
+    { matricula: "241012610055", nome: "Sophia Trajano Da Silva Magalhaes", ano: 3 }		
 ];
