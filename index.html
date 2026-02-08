@@ -110,11 +110,11 @@
                         <input type="text" id="matricula-input" placeholder="Digite sua matrícula" required autofocus>
                     </div>
                     <div id="login-error" class="status-message status-error hidden"></div>
-                    <button type="submit" class="btn btn-primary">Acessar Sistema</button>
+                    <button type="submit" class="btn btn-primary">Acessar sistema</button>
                 </form>
                 <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
                     <p style="font-size: 0.85rem; color: #777; margin-bottom: 0.5rem;">Área Restrita</p>
-                    <button id="btn-admin-login" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.6rem;">🔐 Acesso da Coordenação</button>
+                    <button id="btn-admin-login" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.6rem;">🔐 Acesso da coordenação</button>
                 </div>
             </div>
         </div>
@@ -132,7 +132,7 @@
                 <div class="user-info">
                     <div class="user-avatar" id="user-avatar">?</div>
                     <div class="user-details">
-                        <h3 id="user-name-display">Nome da Estudante</h3>
+                        <h3 id="user-name-display">Nome da estudante</h3>
                         <span id="user-status">Aguardando seleção...</span>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                 <div id="selection-text"></div>
             </div>
 
-            <h2 style="font-family: Fraunces, serif; color: var(--verde-ifb); margin: 2rem 0 1rem;">Bases Disponíveis para Você</h2>
+            <h2 style="font-family: Fraunces, serif; color: var(--verde-ifb); margin: 2rem 0 1rem;">Bases disponíveis para você</h2>
             <div id="loading-indicator" style="text-align: center; padding: 2rem; color: #666;">Carregando vagas em tempo real...</div>
             <div class="bases-grid hidden" id="bases-grid"></div>
         </div>
@@ -168,11 +168,11 @@
                     <div style="font-size: 0.9rem; color: #666;">Pendentes</div>
                 </div>
                 <div class="stat-card" style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                    <button id="btn-open-pending" class="btn btn-aviso">📋 Ver Pendentes</button>
-                    <button id="btn-export" class="btn btn-primary">📥 Excel (Geral)</button>
-                    <button id="btn-export-visual" class="btn btn-outline" style="border: 2px solid var(--verde-ifb); color: var(--verde-ifb);">📑 Excel (Por Salas)</button>
+                    <button id="btn-open-pending" class="btn btn-aviso">📋 Ver pendentes</button>
+                    <button id="btn-export" class="btn btn-primary">📥 Excel (geral)</button>
+                    <button id="btn-export-visual" class="btn btn-outline" style="border: 2px solid var(--verde-ifb); color: var(--verde-ifb);">📑 Excel (por salas)</button>
                     
-                    <button id="btn-reset" class="btn btn-danger" style="font-size: 0.9rem;">⚠️ Resetar Sistema</button>
+                    <button id="btn-reset" class="btn btn-danger" style="font-size: 0.9rem;">⚠️ Resetar sistema</button>
                 </div>
             </div>
 
@@ -198,7 +198,7 @@
 
             <div style="background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--sombra);">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                    <h3 style="color: var(--verde-ifb); font-family: Fraunces, serif;">Lista Detalhada de Inscritos</h3>
+                    <h3 style="color: var(--verde-ifb); font-family: Fraunces, serif;">Lista detalhada de inscritos</h3>
                     <select id="filtro-base" style="padding: 0.5rem; border-radius: 8px; border: 1px solid var(--borda);">
                         <option value="">Todas as Bases</option>
                     </select>
@@ -226,7 +226,7 @@
     <div id="admin-modal" class="modal-overlay hidden">
         <div class="modal">
             <div style="padding: 1.5rem; border-bottom: 1px solid var(--borda);">
-                <h3 style="font-family: Fraunces, serif; color: var(--verde-ifb);">Acesso Restrito</h3>
+                <h3 style="font-family: Fraunces, serif; color: var(--verde-ifb);">Acesso restrito</h3>
             </div>
             <form id="admin-form" style="padding: 1.5rem;">
                 <div class="form-group">
@@ -245,13 +245,13 @@
     <div id="pending-modal" class="modal-overlay hidden">
         <div class="modal modal-lg">
             <div style="padding: 1.5rem; border-bottom: 1px solid var(--borda); display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="font-family: Fraunces, serif; color: #e65100;">Estudantes Pendentes</h3>
+                <h3 style="font-family: Fraunces, serif; color: #e65100;">Estudantes pendentes</h3>
                 <button type="button" id="btn-close-pending" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
             </div>
             <div style="padding: 1.5rem;">
                 <div style="display:flex; gap:1rem; margin-bottom:1rem;">
-                    <button onclick="copyPendingList()" class="btn btn-outline" style="margin:0; width:auto;">📋 Copiar Lista (WhatsApp)</button>
-                    <button onclick="exportPendingCSV()" class="btn btn-primary" style="margin:0; width:auto;">📥 Baixar Excel</button>
+                    <button onclick="copyPendingList()" class="btn btn-outline" style="margin:0; width:auto;">📋 Copiar lista</button>
+                    <button onclick="exportPendingCSV()" class="btn btn-primary" style="margin:0; width:auto;">📥 Baixar excel</button>
                 </div>
                 <div class="table-container scrollable-list">
                     <table>
@@ -385,7 +385,7 @@
                     btnHtml = `<button class="btn btn-outline" disabled>Você já escolheu outra</button>`;
                 } else if (baseLotada) {
                     cardClass += ' unavailable';
-                    btnHtml = `<button class="btn btn-outline" disabled>Base Lotada</button>`;
+                    btnHtml = `<button class="btn btn-outline" disabled>Base lotada</button>`;
                 } else if (!temVagaAno) {
                     cardClass += ' unavailable';
                     btnHtml = `<button class="btn btn-outline" disabled>Esgotado p/ ${currentUser.ano}º Ano</button>`;
@@ -720,3 +720,4 @@
     </script>
 </body>
 </html>
+
