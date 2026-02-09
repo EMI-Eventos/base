@@ -106,14 +106,14 @@
                 <h2>👋 Bem-vinda, estudante</h2>
                 <form id="login-form">
                     <div class="form-group">
-                        <label for="matricula-input">Número de Matrícula</label>
+                        <label for="matricula-input">Número de matrícula</label>
                         <input type="text" id="matricula-input" placeholder="Digite sua matrícula" required autofocus>
                     </div>
                     <div id="login-error" class="status-message status-error hidden"></div>
                     <button type="submit" class="btn btn-primary">Acessar sistema</button>
                 </form>
                 <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
-                    <p style="font-size: 0.85rem; color: #777; margin-bottom: 0.5rem;">Área Restrita</p>
+                    <p style="font-size: 0.85rem; color: #777; margin-bottom: 0.5rem;">Área restrita</p>
                     <button id="btn-admin-login" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.6rem;">🔐 Acesso da coordenação</button>
                 </div>
             </div>
@@ -484,7 +484,9 @@
 
                 tbody.innerHTML += `
                     <tr>
-                        <td style="font-weight:bold; color:var(--verde-ifb)">${base.nome}</td>
+                        <td style="font-weight:bold; color:var(--verde-ifb)">
+                            ${base.nome} <span style="font-weight:normal; font-size:0.85rem; color:#666;"> - ${base.docente}</span>
+                        </td>
                         <td style="text-align:center">${counts[1]}/${COTAS[1]}</td>
                         <td style="text-align:center">${counts[2]}/${COTAS[2]}</td>
                         <td style="text-align:center">${counts[3]}/${COTAS[3]}</td>
@@ -720,4 +722,3 @@
     </script>
 </body>
 </html>
-
